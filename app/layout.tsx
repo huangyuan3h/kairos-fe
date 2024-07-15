@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Provider } from "@/components/provider";
+import { LeftMenu } from "@/components/LeftMenu";
+import { Header } from "@/components/Header";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -26,7 +29,18 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        {children}
+        <Provider>
+          <div className="grid h-screen w-full pl-[56px]">
+            <LeftMenu />
+            <div className="flex flex-col">
+              <Header />
+              <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-2 lg:grid-cols-3">
+                {" "}
+                {children}
+              </main>
+            </div>
+          </div>
+        </Provider>
       </body>
     </html>
   );
