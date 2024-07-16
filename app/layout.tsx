@@ -34,7 +34,6 @@ export const metadata: Metadata = {
     },
   ],
   creator: "Yuan Huang",
-  themeColor: "#ffffff",
   applicationName: "Kairos",
   manifest: "/site.webmanifest",
   metadataBase: new URL(DOMAIN_URL),
