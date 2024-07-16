@@ -6,42 +6,29 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import {
-  Book,
-  Bot,
-  Code2,
-  LifeBuoy,
-  Settings2,
-  SquareTerminal,
-  SquareUser,
-  LineChart,
-  Languages,
-  TrendingUp,
-  Sheet,
-} from "lucide-react";
+import { LifeBuoy, SquareUser, Languages, TrendingUp } from "lucide-react";
 import { menuItems } from "./menuConfig";
+import Link from "next/link";
+
+const menuButtonStyle =
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 w-10";
 
 export const LeftMenu: React.FC = () => {
   return (
     <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">
-        <Button variant="ghost" size="icon" aria-label="Home">
+        <Link href={"/"} className={menuButtonStyle}>
           <TrendingUp className="size-5" />
-        </Button>
+        </Link>
       </div>
       <nav className="grid gap-1 p-2">
         {menuItems.map((menu) => {
           return (
             <Tooltip key={menu.key}>
               <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="rounded-lg"
-                  aria-label={menu.name}
-                >
+                <Link href={menu.href} className={menuButtonStyle}>
                   {menu.icon}
-                </Button>
+                </Link>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={5}>
                 {menu.name}

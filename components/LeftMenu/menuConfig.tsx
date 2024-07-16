@@ -6,7 +6,7 @@ export interface MenuItemType {
   key: string;
   name: string;
   icon: ReactElement;
-  href?: string;
+  href: string;
 }
 
 export const menuItems: MenuItemType[] = [
