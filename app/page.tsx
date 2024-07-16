@@ -1,3 +1,9 @@
+import { StockPredictLineChart } from "@/components/LineChat";
+
 export default function Home() {
-  return <div>content</div>;
+  return (
+    <div>
+      <StockPredictLineChart />
+    </div>
+  );
 }

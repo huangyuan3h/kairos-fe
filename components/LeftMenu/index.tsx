@@ -16,6 +16,7 @@ import {
   SquareTerminal,
   SquareUser,
   LineChart,
+  Languages,
 } from "lucide-react";
 
 export const LeftMenu: React.FC = () => {
@@ -104,6 +105,21 @@ export const LeftMenu: React.FC = () => {
         </Tooltip>
       </nav>
       <nav className="mt-auto grid gap-1 p-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="mt-auto rounded-lg"
+              aria-label="Help"
+            >
+              <Languages className="size-5" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right" sideOffset={5}>
+            language
+          </TooltipContent>
+        </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
