@@ -7,7 +7,6 @@ import {
 import { Button } from "@/components/ui/button";
 
 import {
-  Bird,
   Book,
   Bot,
   Code2,
@@ -17,92 +16,39 @@ import {
   SquareUser,
   LineChart,
   Languages,
+  TrendingUp,
+  Sheet,
 } from "lucide-react";
+import { menuItems } from "./menuConfig";
 
 export const LeftMenu: React.FC = () => {
   return (
     <aside className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r">
       <div className="border-b p-2">
-        <Button variant="outline" size="icon" aria-label="Home">
-          <LineChart className="size-5" />
+        <Button variant="ghost" size="icon" aria-label="Home">
+          <TrendingUp className="size-5" />
         </Button>
       </div>
       <nav className="grid gap-1 p-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg bg-muted"
-              aria-label="Playground"
-            >
-              <SquareTerminal className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Kairos
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg"
-              aria-label="Models"
-            >
-              <Bot className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Models
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg"
-              aria-label="API"
-            >
-              <Code2 className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            API
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg"
-              aria-label="Documentation"
-            >
-              <Book className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Documentation
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-lg"
-              aria-label="Settings"
-            >
-              <Settings2 className="size-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="right" sideOffset={5}>
-            Settings
-          </TooltipContent>
-        </Tooltip>
+        {menuItems.map((menu) => {
+          return (
+            <Tooltip key={menu.key}>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="rounded-lg"
+                  aria-label={menu.name}
+                >
+                  {menu.icon}
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={5}>
+                {menu.name}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
       </nav>
       <nav className="mt-auto grid gap-1 p-2">
         <Tooltip>

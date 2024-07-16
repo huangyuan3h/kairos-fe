@@ -97,7 +97,7 @@ export const StockTable: React.FC = () => {
   };
 
   return (
-    <Card className="col-span-8 ">
+    <Card className="col-span-8 row-span-4 row-start-2">
       <CardHeader className="px-7">
         <CardTitle>股票预测结果</CardTitle>
         <CardDescription>
@@ -111,11 +111,6 @@ export const StockTable: React.FC = () => {
             <TabsTrigger value="mid">中期</TabsTrigger>
             <TabsTrigger value="long">长期</TabsTrigger>
           </TabsList>
-          <TabsContent value="short">
-            {/* 短期风险偏好的表格内容 */}
-          </TabsContent>
-          <TabsContent value="mid">{/* 中期风险偏好的表格内容 */}</TabsContent>
-          <TabsContent value="long">{/* 长期风险偏好的表格内容 */}</TabsContent>
         </Tabs>
         <Table>
           <TableHeader>

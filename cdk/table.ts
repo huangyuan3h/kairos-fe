@@ -1,7 +1,7 @@
 import { Table, Stack } from "sst/constructs";
 
 export const getTableConfig = (stack: Stack) => {
-  const stockPredictReport = new Table(stack, "stockPredictReport", {
+  const stockPredictReport = new Table(stack, "stockPredict", {
     fields: {
       id: "string",
       report_date: "string",
