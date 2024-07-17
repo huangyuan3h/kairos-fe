@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { InvestmentHorizon } from "../types";
 
 interface DatePickerProps {
   date?: Date;
@@ -47,11 +49,15 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, onChange }) => {
 interface TableBarProps {
   reportDate: string;
   onReportDateChanged: (reportDate: string) => void;
+  strategy: InvestmentHorizon;
+  onStrategyChanged: (strategy: InvestmentHorizon) => void;
 }
 
 export const TableBar: React.FC<TableBarProps> = ({
   reportDate,
   onReportDateChanged,
+  strategy,
+  onStrategyChanged,
 }: TableBarProps) => {
   const currentDate = new Date(reportDate);
 
@@ -59,10 +65,27 @@ export const TableBar: React.FC<TableBarProps> = ({
     onReportDateChanged(format(date, "yyyy-MM-dd"));
   };
 
+  const handleTabChange = (value: string) => {
+    console.log("Tab changed:", value);
+  };
+
   return (
-    <div className="flex">
+    <div className="flex justify-between">
       <div>
+        <span className="text-muted-foreground mr-2">Report Date:</span>
         <DatePicker date={currentDate} onChange={handleDatePickerChange} />
+      </div>
+      <div>
+        <Tabs
+          defaultValue={InvestmentHorizon.ShortTerm}
+          onValueChange={handleTabChange}
+        >
+          <TabsList>
+            {Object.values(InvestmentHorizon).map((horizon) => (
+              <TabsTrigger value={horizon}>{horizon}</TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
       </div>
     </div>
   );
