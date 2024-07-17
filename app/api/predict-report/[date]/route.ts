@@ -29,7 +29,6 @@ export const fetchStockReportByDate = async (
     });
 
     const data = await ddbDocClient.send(command);
-    console.log("Filtered data:", data.Items);
     return data.Items as PredictReportType[];
   } catch (error) {
     console.error("Error fetching filtered data:", error);

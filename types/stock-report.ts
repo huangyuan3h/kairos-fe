@@ -7,4 +7,5 @@ export interface PredictReportType {
   change_3d: number;
   change_5d: number;
   id: string;
+  score?: number;
 }

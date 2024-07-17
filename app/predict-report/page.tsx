@@ -5,14 +5,16 @@ import {
   fetchStockReportByDate,
   getLastBusinessDay,
 } from "./fetchReportByDate";
-import { useSearchParams } from "next/navigation";
+
 import useSWR from "swr";
+import { useState } from "react";
+import { InvestmentHorizon } from "./types";
 
 const PredictReport = () => {
-  const searchParams = useSearchParams();
-  const date = searchParams.get("reportDate");
-  const reportDate = date ? date : getLastBusinessDay();
-
+  const [reportDate, setReportDate] = useState<string>(getLastBusinessDay);
+  const [selectedHorizon, setSelectedHorizon] = useState<InvestmentHorizon>(
+    InvestmentHorizon.ShortTerm
+  );
   const {
     data: reports,
     isLoading,
@@ -21,15 +23,16 @@ const PredictReport = () => {
     fetchStockReportByDate(reportDate)
   );
 
-  // const [reportDate, setReportDate] = useState<string>(getLastBusinessDay);
-
-  // const [selectedHorizon, setSelectedHorizon] = useState<InvestmentHorizon>(
-  //   InvestmentHorizon.ShortTerm
-  // );
+  const handleReportDateChange = (date: string) => {
+    setReportDate(date);
+  };
 
   return (
     <div className="bg-muted/40 p-4">
-      <TableBar />
+      <TableBar
+        reportDate={reportDate}
+        onReportDateChanged={handleReportDateChange}
+      />
       <div>{JSON.stringify(reports)}</div>
     </div>
   );
