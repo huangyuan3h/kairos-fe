@@ -7,7 +7,7 @@ import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
   [InvestmentHorizon.ShortTerm]: [1.1, 1.3, 0.9, 0.7],
-  [InvestmentHorizon.MidTerm]: [1, 1, 1, 1],
+  [InvestmentHorizon.MidTerm]: [0.8, 1.2, 1.2, 0.8],
   [InvestmentHorizon.LongTerm]: [0.7, 0.9, 1.3, 1.1],
 };
 

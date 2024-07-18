@@ -152,7 +152,15 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
                   </span>
                 )}
               </TableCell>
-              <TableCell>{stock.score}</TableCell>
+              <TableCell>
+                {stock.score > 0 ? (
+                  <span className="text-green-500">
+                    {stock.score.toFixed(2)}
+                  </span>
+                ) : (
+                  <span className="text-red-500">{stock.score.toFixed(2)}</span>
+                )}
+              </TableCell>
               <TableCell>
                 <Badge variant="secondary">{stock.recommendation}</Badge>
               </TableCell>

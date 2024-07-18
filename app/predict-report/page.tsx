@@ -46,6 +46,8 @@ const PredictReport = () => {
     tableData = getHorizonData(reports, selectedHorizon, riskTolerance);
   }
 
+  // tableData = tableData?.filter((d) => d.stock_code.includes("002130"));
+
   return (
     <div className="bg-muted/40 p-4">
       <TableBar

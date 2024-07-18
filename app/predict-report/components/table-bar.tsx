@@ -12,6 +12,18 @@ import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { InvestmentHorizon, RiskTolerance } from "../types";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+
+import { Settings, Search } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface DatePickerProps {
   date?: Date;
@@ -19,6 +31,11 @@ interface DatePickerProps {
 }
 
 export const DatePicker: React.FC<DatePickerProps> = ({ date, onChange }) => {
+  const handleChange = (day: Date | undefined) => {
+    if (day) {
+      onChange(day);
+    }
+  };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -37,7 +54,7 @@ export const DatePicker: React.FC<DatePickerProps> = ({ date, onChange }) => {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={onChange}
+          onSelect={handleChange}
           disabled={(d: Date) => d > new Date()}
           initialFocus
         />
@@ -83,28 +100,65 @@ export const TableBar: React.FC<TableBarProps> = ({
         <DatePicker date={currentDate} onChange={handleDatePickerChange} />
       </div>
 
-      <Tabs
-        defaultValue={riskTolerance}
-        onValueChange={handleRiskToleranceTabChange}
-      >
-        <TabsList>
-          {Object.values(RiskTolerance).map((risk) => (
-            <TabsTrigger value={risk} key={`tab-${risk}`}>
-              {risk}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+      <div className="flex gap-4">
+        <div className="relative flex-1 md:grow-0">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="search"
+            placeholder="Search..."
+            className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+          />
+        </div>
+        <Sheet>
+          <SheetTrigger>
+            <Button className="gap-2">
+              <Settings className="h-4 w-4" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Strategy
+              </span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Strategy Configuration</SheetTitle>
+              <SheetDescription>some description</SheetDescription>
+            </SheetHeader>
+            <div className="grid gap-6 mt-6">
+              <div className="grid gap-3">
+                <Label htmlFor="RiskTolerance">Risk Tolerance</Label>
+                <Tabs
+                  defaultValue={riskTolerance}
+                  onValueChange={handleRiskToleranceTabChange}
+                >
+                  <TabsList>
+                    {Object.values(RiskTolerance).map((risk) => (
+                      <TabsTrigger value={risk} key={`tab-${risk}`}>
+                        {risk}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
 
-      <Tabs defaultValue={strategy} onValueChange={handleStrategTabChange}>
-        <TabsList>
-          {Object.values(InvestmentHorizon).map((horizon) => (
-            <TabsTrigger value={horizon} key={`tab-${horizon}`}>
-              {horizon}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
+              <div className="grid gap-3">
+                <Label htmlFor="InvestmentHorizon">Investment Horizon</Label>
+                <Tabs
+                  defaultValue={strategy}
+                  onValueChange={handleStrategTabChange}
+                >
+                  <TabsList>
+                    {Object.values(InvestmentHorizon).map((horizon) => (
+                      <TabsTrigger value={horizon} key={`tab-${horizon}`}>
+                        {horizon}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </div>
     </div>
   );
 };

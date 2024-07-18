@@ -8,7 +8,7 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 
 const tableName = process.env.NEXT_PUBLIC_STOCK_TABLE_NAME;
 
-export const fetchStockReportByDate = async (
+const fetchStockReportByDate = async (
   date: string
 ): Promise<PredictReportType[]> => {
   try {
