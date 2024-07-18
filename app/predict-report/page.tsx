@@ -17,6 +17,9 @@ const PredictReport = () => {
   const [selectedHorizon, setSelectedHorizon] = useState<InvestmentHorizon>(
     InvestmentHorizon.ShortTerm
   );
+  const [riskTolerance, setRiskTolerance] = useState<RiskTolerance>(
+    RiskTolerance.moderate
+  );
   const {
     data: reports,
     isLoading,
@@ -33,14 +36,14 @@ const PredictReport = () => {
     setSelectedHorizon(strategy);
   };
 
+  const handleRiskToleranceChange = (riskTolerance: RiskTolerance) => {
+    setRiskTolerance(riskTolerance);
+  };
+
   let tableData = null;
 
   if (reports) {
-    tableData = getHorizonData(
-      reports,
-      selectedHorizon,
-      RiskTolerance.moderate
-    );
+    tableData = getHorizonData(reports, selectedHorizon, riskTolerance);
   }
 
   return (
@@ -50,6 +53,8 @@ const PredictReport = () => {
         onReportDateChanged={handleReportDateChange}
         strategy={selectedHorizon}
         onStrategyChanged={handleStrategyChanged}
+        riskTolerance={riskTolerance}
+        onRiskToleranceChanged={handleRiskToleranceChange}
       />
       <div>{tableData && <StockTable reportData={tableData} />}</div>
     </div>

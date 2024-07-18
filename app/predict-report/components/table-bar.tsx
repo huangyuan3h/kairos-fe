@@ -11,7 +11,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InvestmentHorizon } from "../types";
+import { InvestmentHorizon, RiskTolerance } from "../types";
 
 interface DatePickerProps {
   date?: Date;
@@ -51,6 +51,8 @@ interface TableBarProps {
   onReportDateChanged: (reportDate: string) => void;
   strategy: InvestmentHorizon;
   onStrategyChanged: (strategy: InvestmentHorizon) => void;
+  riskTolerance: RiskTolerance;
+  onRiskToleranceChanged: (riskTolerance: RiskTolerance) => void;
 }
 
 export const TableBar: React.FC<TableBarProps> = ({
@@ -58,6 +60,8 @@ export const TableBar: React.FC<TableBarProps> = ({
   onReportDateChanged,
   strategy,
   onStrategyChanged,
+  riskTolerance,
+  onRiskToleranceChanged,
 }: TableBarProps) => {
   const currentDate = new Date(reportDate);
 
@@ -65,8 +69,11 @@ export const TableBar: React.FC<TableBarProps> = ({
     onReportDateChanged(format(date, "yyyy-MM-dd"));
   };
 
-  const handleTabChange = (value: string) => {
+  const handleStrategTabChange = (value: string) => {
     onStrategyChanged(value as InvestmentHorizon);
+  };
+  const handleRiskToleranceTabChange = (value: string) => {
+    onRiskToleranceChanged(value as RiskTolerance);
   };
 
   return (
@@ -75,17 +82,29 @@ export const TableBar: React.FC<TableBarProps> = ({
         <span className="text-muted-foreground mr-2">Report Date:</span>
         <DatePicker date={currentDate} onChange={handleDatePickerChange} />
       </div>
-      <div>
-        <Tabs defaultValue={strategy} onValueChange={handleTabChange}>
-          <TabsList>
-            {Object.values(InvestmentHorizon).map((horizon) => (
-              <TabsTrigger value={horizon} key={`tab-${horizon}`}>
-                {horizon}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-        </Tabs>
-      </div>
+
+      <Tabs
+        defaultValue={riskTolerance}
+        onValueChange={handleRiskToleranceTabChange}
+      >
+        <TabsList>
+          {Object.values(RiskTolerance).map((risk) => (
+            <TabsTrigger value={risk} key={`tab-${risk}`}>
+              {risk}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+
+      <Tabs defaultValue={strategy} onValueChange={handleStrategTabChange}>
+        <TabsList>
+          {Object.values(InvestmentHorizon).map((horizon) => (
+            <TabsTrigger value={horizon} key={`tab-${horizon}`}>
+              {horizon}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
     </div>
   );
 };
