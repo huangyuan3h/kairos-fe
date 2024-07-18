@@ -9,23 +9,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { PredictReportType } from "@/types/stock-report";
-
-interface PredictReportDisplayType extends PredictReportType {
-  score: number;
-  name: string;
-  recommendation: string;
-}
+import { PredictReportDisplayType } from "@/types/stock-report";
 
 interface StockTableProps {
   reportData: PredictReportDisplayType[];
-  sortByScore: "asc" | "desc";
 }
 
-export const StockTableComponent: React.FC<StockTableProps> = ({
-  reportData,
-  sortByScore,
-}) => {
+export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
+  const [sortByScore, setSortByScore] = React.useState<"asc" | "desc">("desc");
+
   const sortedData = [...reportData].sort((a, b) => {
     if (sortByScore === "asc") {
       return a.score - b.score;

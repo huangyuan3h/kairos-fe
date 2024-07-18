@@ -5,47 +5,28 @@ import {
 import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
-const ristFactConfig = {
-  aggressive: 1.2,
-  moderate: 1.0,
-  conservative: 0.8,
+const InvestmentHorizonMapping = {
+  [InvestmentHorizon.ShortTerm]: [1.1, 1.3, 0.9, 0.7],
+  [InvestmentHorizon.MidTerm]: [1, 1, 1, 1],
+  [InvestmentHorizon.LongTerm]: [0.7, 0.9, 1.3, 1.1],
 };
 
 export const calculateDecisionScore = (
   report: PredictReportType,
-  riskTolerance: RiskTolerance,
-  volatilities: number[] = [0.02, 0.03, 0.04, 0.05]
+  investmentHorizon: InvestmentHorizon
 ): number => {
-  const { change_3d, change_5d, change_10d } = report;
+  const { change_1d, change_3d, change_5d, change_10d } = report;
 
-  const [
-    _,
-    short_term_volatility,
-    medium_term_volatility,
-    long_term_volatility,
-  ] = volatilities;
-
-  let risk_factor = ristFactConfig[riskTolerance];
-
-  // 使用夏普比率调整收益率，考虑波动率和风险偏好
-  const short_sharpe_ratio = (change_3d / short_term_volatility) * risk_factor;
-  const medium_sharpe_ratio =
-    (change_5d / medium_term_volatility) * risk_factor;
-  const long_sharpe_ratio = (change_10d / long_term_volatility) * risk_factor;
-
-  // 动态调整权重，短期收益率权重更高
-  const total_sharpe =
-    short_sharpe_ratio + medium_sharpe_ratio + long_sharpe_ratio;
-  const short_weight = short_sharpe_ratio / total_sharpe;
-  const medium_weight = medium_sharpe_ratio / total_sharpe;
-  const long_weight = long_sharpe_ratio / total_sharpe;
+  const [weight1, weight3, weight5, weight10] =
+    InvestmentHorizonMapping[investmentHorizon];
 
   const decisionScore =
-    change_3d * short_weight +
-    change_5d * medium_weight +
-    change_10d * long_weight;
+    change_1d * weight1 +
+    change_3d * 0.33 * weight3 +
+    change_5d * 0.2 * weight5 +
+    change_10d * 0.1 * weight10;
 
-  return decisionScore;
+  return decisionScore / 4;
 };
 
 export const makeDecision = (
@@ -57,19 +38,19 @@ export const makeDecision = (
 
   switch (riskTolerance) {
     case "aggressive":
-      buyThreshold = 0.8;
-      holdThreshold = 0.3;
-      waitThreshold = -0.2;
+      buyThreshold = 1.2;
+      holdThreshold = 0.4;
+      waitThreshold = 0;
       break;
     case "moderate":
-      buyThreshold = 0.5;
-      holdThreshold = 0.2;
-      waitThreshold = -0.1;
+      buyThreshold = 1.6;
+      holdThreshold = 0.8;
+      waitThreshold = 0.4;
       break;
     case "conservative":
-      buyThreshold = 0.3;
-      holdThreshold = 0.1;
-      waitThreshold = 0;
+      buyThreshold = 2;
+      holdThreshold = 1.2;
+      waitThreshold = 0.6;
       break;
     default:
       throw new Error(`Invalid risk tolerance: ${riskTolerance}`);
@@ -77,22 +58,23 @@ export const makeDecision = (
 
   // 根据决策分数确定操作建议
   if (decisionScore >= buyThreshold) {
-    return "买入（Buy）";
+    return "买入";
   } else if (decisionScore >= holdThreshold) {
-    return "持有（Hold）";
+    return "持有/观望";
   } else if (decisionScore >= waitThreshold) {
-    return "观望（Wait）";
+    return "观望/卖出";
   } else {
-    return "卖出（Sell）";
+    return "卖出";
   }
 };
 
 export const getHorizonData = (
-  tolerance: RiskTolerance,
-  data: PredictReportType[]
+  data: PredictReportType[],
+  investmentHorizon: InvestmentHorizon,
+  tolerance: RiskTolerance
 ) => {
   const mappedData: PredictReportDisplayType[] = data.map((report) => {
-    const score = calculateDecisionScore(report, tolerance);
+    const score = calculateDecisionScore(report, investmentHorizon);
     return {
       ...report,
       name: stockNameConfig[report.stock_code],
@@ -101,7 +83,5 @@ export const getHorizonData = (
     };
   });
 
-  const sortedData = mappedData.sort((a, b) => b.score - a.score);
-
-  return sortedData;
+  return mappedData;
 };

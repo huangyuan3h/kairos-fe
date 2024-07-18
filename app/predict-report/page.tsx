@@ -10,6 +10,7 @@ import useSWR from "swr";
 import { useState } from "react";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 import { getHorizonData } from "./reportProcess";
+import { StockTable } from "@/components/predict-report-table";
 
 const PredictReport = () => {
   const [reportDate, setReportDate] = useState<string>(getLastBusinessDay);
@@ -35,7 +36,11 @@ const PredictReport = () => {
   let tableData = null;
 
   if (reports) {
-    tableData = getHorizonData(RiskTolerance.moderate, reports);
+    tableData = getHorizonData(
+      reports,
+      selectedHorizon,
+      RiskTolerance.moderate
+    );
   }
 
   return (
@@ -46,7 +51,7 @@ const PredictReport = () => {
         strategy={selectedHorizon}
         onStrategyChanged={handleStrategyChanged}
       />
-      <div>{JSON.stringify(tableData)}</div>
+      <div>{tableData && <StockTable reportData={tableData} />}</div>
     </div>
   );
 };
