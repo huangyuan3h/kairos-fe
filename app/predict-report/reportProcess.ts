@@ -37,17 +37,17 @@ export const makeDecision = (
   let buyThreshold: number, holdThreshold: number, waitThreshold: number;
 
   switch (riskTolerance) {
-    case "aggressive":
+    case RiskTolerance.aggressive:
       buyThreshold = 1.2;
       holdThreshold = 0.4;
       waitThreshold = 0;
       break;
-    case "moderate":
+    case RiskTolerance.moderate:
       buyThreshold = 1.6;
       holdThreshold = 0.8;
       waitThreshold = 0.4;
       break;
-    case "conservative":
+    case RiskTolerance.conservative:
       buyThreshold = 2;
       holdThreshold = 1.2;
       waitThreshold = 0.6;

@@ -8,7 +8,7 @@ import {
 
 import useSWR from "swr";
 import { useState } from "react";
-import { InvestmentHorizon, RiskTolerance } from "./types";
+import { InvestmentHorizon, RiskTolerance, TabEnum } from "./types";
 import { getHorizonData } from "./reportProcess";
 import { StockTable } from "@/components/predict-report-table";
 
@@ -20,6 +20,7 @@ const PredictReport = () => {
   const [riskTolerance, setRiskTolerance] = useState<RiskTolerance>(
     RiskTolerance.moderate
   );
+  const [tab, setTab] = useState<TabEnum>(TabEnum.system);
   const [searchText, setSearchText] = useState<string>("");
   const { data: reports } = useSWR(`api/reportDate?date=${reportDate}`, () =>
     fetchStockReportByDate(reportDate)
@@ -35,6 +36,10 @@ const PredictReport = () => {
 
   const handleRiskToleranceChange = (riskTolerance: RiskTolerance) => {
     setRiskTolerance(riskTolerance);
+  };
+
+  const handleTabChanged = (tab: TabEnum) => {
+    setTab(tab);
   };
 
   let tableData = null;
@@ -62,6 +67,8 @@ const PredictReport = () => {
         onRiskToleranceChanged={handleRiskToleranceChange}
         searchText={searchText}
         onSearchTextChanged={handleSearchTextChanged}
+        tab={tab}
+        onTabChanged={handleTabChanged}
       />
       <div>{tableData && <StockTable reportData={tableData} />}</div>
     </div>

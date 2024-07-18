@@ -11,7 +11,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { InvestmentHorizon, RiskTolerance } from "../types";
+import { InvestmentHorizon, RiskTolerance, TabEnum } from "../types";
 import {
   Sheet,
   SheetContent,
@@ -75,6 +75,8 @@ interface TableBarProps {
   onRiskToleranceChanged: (riskTolerance: RiskTolerance) => void;
   searchText: string;
   onSearchTextChanged: (text: string) => void;
+  tab: TabEnum;
+  onTabChanged: (tab: TabEnum) => void;
 }
 
 export const TableBar: React.FC<TableBarProps> = ({
@@ -86,6 +88,8 @@ export const TableBar: React.FC<TableBarProps> = ({
   onRiskToleranceChanged,
   searchText,
   onSearchTextChanged,
+  tab,
+  onTabChanged,
 }: TableBarProps) => {
   const currentDate = new Date(reportDate);
 
@@ -104,8 +108,21 @@ export const TableBar: React.FC<TableBarProps> = ({
     onSearchTextChanged(e.target.value);
   };
 
+  const handleTabChange = (value: string) => {
+    onTabChanged(value as TabEnum);
+  };
+
   return (
     <div className="flex justify-between">
+      <Tabs defaultValue={tab} onValueChange={handleTabChange}>
+        <TabsList>
+          {Object.values(TabEnum).map((tab) => (
+            <TabsTrigger value={tab} key={`tab-${tab}`}>
+              {tab}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       <div>
         <span className="text-muted-foreground mr-2">Report Date:</span>
         <DatePicker date={currentDate} onChange={handleDatePickerChange} />

@@ -5,7 +5,12 @@ export enum InvestmentHorizon {
 }
 
 export enum RiskTolerance {
-  aggressive = "aggressive",
-  moderate = "moderate",
-  conservative = "conservative",
+  aggressive = "Aggressive",
+  moderate = "Moderate",
+  conservative = "Conservative",
+}
+
+export enum TabEnum {
+  system = "System",
+  myStock = "My Stocks",
 }
