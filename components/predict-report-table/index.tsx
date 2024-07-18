@@ -24,11 +24,33 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
+interface PaginationNumberProps {
+  pageNum: number;
+  onChange: (pageNum: number) => void;
+}
+
+const PaginationNumber: React.FC<PaginationNumberProps> = ({
+  pageNum,
+  onChange,
+}) => {
+  return (
+    <PaginationItem>
+      <PaginationLink
+        onClick={() => onChange(pageNum)}
+        className="cursor-pointer"
+      >
+        {pageNum + 1}
+      </PaginationLink>
+    </PaginationItem>
+  );
+};
+
 const PAGE_SIZE = 10;
 export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
   const [sortByScore, setSortByScore] = React.useState<"asc" | "desc">("desc");
 
   const [currentPage, setCurrentPage] = React.useState(0);
+  const lastPage = Math.floor(reportData.length / PAGE_SIZE);
 
   const sortedData = [...reportData].sort((a, b) => {
     if (sortByScore === "asc") {
@@ -52,9 +74,12 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
   };
 
   const handleClickNext = () => {
-    setCurrentPage(Math.min(currentPage + 1, reportData.length / PAGE_SIZE));
+    setCurrentPage(Math.min(currentPage + 1, lastPage));
   };
 
+  const handleSetPage = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <>
       <Table>
@@ -143,9 +168,63 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
               className="cursor-pointer"
             />
           </PaginationItem>
+
+          {currentPage >= 1 && (
+            <PaginationNumber pageNum={0} onChange={handleSetPage} />
+          )}
+          {currentPage >= 2 && (
+            <PaginationNumber pageNum={1} onChange={handleSetPage} />
+          )}
+
+          {currentPage >= 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {currentPage >= 4 && (
+            <PaginationNumber
+              pageNum={currentPage - 2}
+              onChange={handleSetPage}
+            />
+          )}
+
+          {currentPage >= 3 && (
+            <PaginationNumber
+              pageNum={currentPage - 1}
+              onChange={handleSetPage}
+            />
+          )}
           <PaginationItem>
             <PaginationLink isActive>{currentPage + 1}</PaginationLink>
           </PaginationItem>
+
+          {currentPage <= lastPage - 3 && (
+            <PaginationNumber
+              pageNum={currentPage + 1}
+              onChange={handleSetPage}
+            />
+          )}
+
+          {currentPage <= lastPage - 4 && (
+            <PaginationNumber
+              pageNum={currentPage + 2}
+              onChange={handleSetPage}
+            />
+          )}
+
+          {currentPage <= lastPage - 5 && (
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
+          )}
+
+          {currentPage <= lastPage - 2 && (
+            <PaginationNumber pageNum={lastPage - 1} onChange={handleSetPage} />
+          )}
+          {currentPage <= lastPage - 1 && (
+            <PaginationNumber pageNum={lastPage} onChange={handleSetPage} />
+          )}
           <PaginationItem>
             <PaginationNext
               onClick={handleClickNext}
