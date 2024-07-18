@@ -8,7 +8,8 @@ import {
 
 import useSWR from "swr";
 import { useState } from "react";
-import { InvestmentHorizon } from "./types";
+import { InvestmentHorizon, RiskTolerance } from "./types";
+import { getHorizonData } from "./reportProcess";
 
 const PredictReport = () => {
   const [reportDate, setReportDate] = useState<string>(getLastBusinessDay);
@@ -27,13 +28,25 @@ const PredictReport = () => {
     setReportDate(date);
   };
 
+  const handleStrategyChanged = (strategy: InvestmentHorizon) => {
+    setSelectedHorizon(strategy);
+  };
+
+  let tableData = null;
+
+  if (reports) {
+    tableData = getHorizonData(RiskTolerance.moderate, reports);
+  }
+
   return (
     <div className="bg-muted/40 p-4">
       <TableBar
         reportDate={reportDate}
         onReportDateChanged={handleReportDateChange}
+        strategy={selectedHorizon}
+        onStrategyChanged={handleStrategyChanged}
       />
-      <div>{JSON.stringify(reports)}</div>
+      <div>{JSON.stringify(tableData)}</div>
     </div>
   );
 };

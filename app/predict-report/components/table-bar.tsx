@@ -66,7 +66,7 @@ export const TableBar: React.FC<TableBarProps> = ({
   };
 
   const handleTabChange = (value: string) => {
-    console.log("Tab changed:", value);
+    onStrategyChanged(value as InvestmentHorizon);
   };
 
   return (
@@ -76,13 +76,12 @@ export const TableBar: React.FC<TableBarProps> = ({
         <DatePicker date={currentDate} onChange={handleDatePickerChange} />
       </div>
       <div>
-        <Tabs
-          defaultValue={InvestmentHorizon.ShortTerm}
-          onValueChange={handleTabChange}
-        >
+        <Tabs defaultValue={strategy} onValueChange={handleTabChange}>
           <TabsList>
             {Object.values(InvestmentHorizon).map((horizon) => (
-              <TabsTrigger value={horizon}>{horizon}</TabsTrigger>
+              <TabsTrigger value={horizon} key={`tab-${horizon}`}>
+                {horizon}
+              </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>

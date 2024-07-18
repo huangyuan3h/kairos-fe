@@ -9,3 +9,9 @@ export interface PredictReportType {
   id: string;
   score?: number;
 }
+
+export interface PredictReportDisplayType extends PredictReportType {
+  score: number;
+  name: string;
+  recommendation: string;
+}
