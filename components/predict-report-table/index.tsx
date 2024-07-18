@@ -52,7 +52,7 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
   };
 
   const handleClickNext = () => {
-    setCurrentPage(Math.min(currentPage + 1, reportData.length % PAGE_SIZE));
+    setCurrentPage(Math.min(currentPage + 1, reportData.length / PAGE_SIZE));
   };
 
   return (
@@ -138,10 +138,19 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
       <Pagination defaultValue={currentPage + 1}>
         <PaginationContent>
           <PaginationItem>
-            <PaginationPrevious onClick={handleClickPrevious} />
+            <PaginationPrevious
+              onClick={handleClickPrevious}
+              className="cursor-pointer"
+            />
           </PaginationItem>
           <PaginationItem>
-            <PaginationNext onClick={handleClickNext} />
+            <PaginationLink isActive>{currentPage + 1}</PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationNext
+              onClick={handleClickNext}
+              className="cursor-pointer"
+            />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
