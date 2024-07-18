@@ -25,6 +25,9 @@ import { Settings, Search } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
+const styleOfButton =
+  "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-3  gap-1";
+
 interface DatePickerProps {
   date?: Date;
   onChange: (reportDate: Date) => void;
@@ -70,6 +73,8 @@ interface TableBarProps {
   onStrategyChanged: (strategy: InvestmentHorizon) => void;
   riskTolerance: RiskTolerance;
   onRiskToleranceChanged: (riskTolerance: RiskTolerance) => void;
+  searchText: string;
+  onSearchTextChanged: (text: string) => void;
 }
 
 export const TableBar: React.FC<TableBarProps> = ({
@@ -79,6 +84,8 @@ export const TableBar: React.FC<TableBarProps> = ({
   onStrategyChanged,
   riskTolerance,
   onRiskToleranceChanged,
+  searchText,
+  onSearchTextChanged,
 }: TableBarProps) => {
   const currentDate = new Date(reportDate);
 
@@ -91,6 +98,10 @@ export const TableBar: React.FC<TableBarProps> = ({
   };
   const handleRiskToleranceTabChange = (value: string) => {
     onRiskToleranceChanged(value as RiskTolerance);
+  };
+
+  const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onSearchTextChanged(e.target.value);
   };
 
   return (
@@ -107,16 +118,16 @@ export const TableBar: React.FC<TableBarProps> = ({
             type="search"
             placeholder="Search..."
             className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+            value={searchText}
+            onChange={handleChangeSearchText}
           />
         </div>
         <Sheet>
-          <SheetTrigger>
-            <Button className="gap-2">
-              <Settings className="h-4 w-4" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Strategy
-              </span>
-            </Button>
+          <SheetTrigger className={styleOfButton}>
+            <Settings className="h-4 w-4" />
+            <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+              Strategy
+            </span>
           </SheetTrigger>
           <SheetContent>
             <SheetHeader>

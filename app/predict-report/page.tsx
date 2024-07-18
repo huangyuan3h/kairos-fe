@@ -20,11 +20,8 @@ const PredictReport = () => {
   const [riskTolerance, setRiskTolerance] = useState<RiskTolerance>(
     RiskTolerance.moderate
   );
-  const {
-    data: reports,
-    isLoading,
-    mutate,
-  } = useSWR(`api/reportDate?date=${reportDate}`, () =>
+  const [searchText, setSearchText] = useState<string>("");
+  const { data: reports } = useSWR(`api/reportDate?date=${reportDate}`, () =>
     fetchStockReportByDate(reportDate)
   );
 
@@ -46,7 +43,13 @@ const PredictReport = () => {
     tableData = getHorizonData(reports, selectedHorizon, riskTolerance);
   }
 
-  // tableData = tableData?.filter((d) => d.stock_code.includes("002130"));
+  const handleSearchTextChanged = (text: string) => {
+    setSearchText(text);
+  };
+
+  tableData = tableData?.filter(
+    (d) => d.stock_code.includes(searchText) || d.name.includes(searchText)
+  );
 
   return (
     <div className="bg-muted/40 p-4">
@@ -57,6 +60,8 @@ const PredictReport = () => {
         onStrategyChanged={handleStrategyChanged}
         riskTolerance={riskTolerance}
         onRiskToleranceChanged={handleRiskToleranceChange}
+        searchText={searchText}
+        onSearchTextChanged={handleSearchTextChanged}
       />
       <div>{tableData && <StockTable reportData={tableData} />}</div>
     </div>
