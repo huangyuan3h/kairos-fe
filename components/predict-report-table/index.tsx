@@ -11,8 +11,16 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { PredictReportDisplayType } from "@/types/stock-report";
 
+export interface ExtraColumnProps {
+  stock: PredictReportDisplayType;
+  onExtraClick?: (action: string, id: string) => void;
+}
+
 interface StockTableProps {
   reportData: PredictReportDisplayType[];
+  ExtraHeader?: React.FunctionComponent;
+  ExtraColumn?: React.FunctionComponent<ExtraColumnProps>;
+  onExtraClick?: (action: string, id: string) => void;
 }
 import {
   Pagination,
@@ -49,7 +57,12 @@ const PAGE_SIZE = 10;
 
 const Number_Fix = 4;
 
-export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
+export const StockTable: React.FC<StockTableProps> = ({
+  reportData,
+  ExtraHeader,
+  ExtraColumn,
+  onExtraClick,
+}) => {
   const [sortByScore, setSortByScore] = React.useState<"asc" | "desc">("desc");
 
   const [currentPage, setCurrentPage] = React.useState(0);
@@ -100,6 +113,7 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
               综合评分 {sortByScore === "asc" ? "↓" : "↑"}
             </TableHead>
             <TableHead>推荐行为</TableHead>
+            {ExtraHeader && <ExtraHeader />}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -167,6 +181,9 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
               <TableCell>
                 <Badge variant="secondary">{stock.recommendation}</Badge>
               </TableCell>
+              {ExtraColumn && (
+                <ExtraColumn stock={stock} onExtraClick={onExtraClick} />
+              )}
             </TableRow>
           ))}
         </TableBody>
