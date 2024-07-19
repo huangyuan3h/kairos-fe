@@ -123,12 +123,8 @@ export const TableBar: React.FC<TableBarProps> = ({
           ))}
         </TabsList>
       </Tabs>
-      <div>
-        <span className="text-muted-foreground mr-2">Report Date:</span>
-        <DatePicker date={currentDate} onChange={handleDatePickerChange} />
-      </div>
-
-      <div className="flex gap-4">
+      <div className="flex gap-4 items-center">
+        <Label className="text-base">股票名称/代码:</Label>
         <div className="relative flex-1 md:grow-0">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -139,6 +135,12 @@ export const TableBar: React.FC<TableBarProps> = ({
             onChange={handleChangeSearchText}
           />
         </div>
+      </div>
+
+      <div className="flex gap-4">
+        <div>
+          <DatePicker date={currentDate} onChange={handleDatePickerChange} />
+        </div>
         <Sheet>
           <SheetTrigger className={styleOfButton}>
             <Settings className="h-4 w-4" />
@@ -146,7 +148,7 @@ export const TableBar: React.FC<TableBarProps> = ({
               Strategy
             </span>
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent side={"bottom"}>
             <SheetHeader>
               <SheetTitle>Strategy Configuration</SheetTitle>
               <SheetDescription>some description</SheetDescription>

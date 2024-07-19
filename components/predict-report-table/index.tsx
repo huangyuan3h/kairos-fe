@@ -46,6 +46,9 @@ const PaginationNumber: React.FC<PaginationNumberProps> = ({
 };
 
 const PAGE_SIZE = 10;
+
+const Number_Fix = 4;
+
 export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
   const [sortByScore, setSortByScore] = React.useState<"asc" | "desc">("desc");
 
@@ -111,51 +114,51 @@ export const StockTable: React.FC<StockTableProps> = ({ reportData }) => {
               <TableCell>
                 {stock.change_1d > 0 ? (
                   <span className="text-green-500">
-                    +{stock.change_1d.toFixed(2)}%
+                    +{stock.change_1d.toFixed(Number_Fix)}%
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    {stock.change_1d.toFixed(2)}%
+                    {stock.change_1d.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>
               <TableCell>
                 {stock.change_3d > 0 ? (
                   <span className="text-green-500">
-                    +{stock.change_3d.toFixed(2)}%
+                    +{stock.change_3d.toFixed(Number_Fix)}%
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    {stock.change_3d.toFixed(2)}%
+                    {stock.change_3d.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>
               <TableCell>
                 {stock.change_5d > 0 ? (
                   <span className="text-green-500">
-                    +{stock.change_5d.toFixed(2)}%
+                    +{stock.change_5d.toFixed(Number_Fix)}%
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    {stock.change_5d.toFixed(2)}%
+                    {stock.change_5d.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>
               <TableCell>
                 {stock.change_10d > 0 ? (
                   <span className="text-green-500">
-                    +{stock.change_10d.toFixed(2)}%
+                    +{stock.change_10d.toFixed(Number_Fix)}%
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    {stock.change_10d.toFixed(2)}%
+                    {stock.change_10d.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>
               <TableCell>
                 {stock.score > 0 ? (
                   <span className="text-green-500">
-                    {stock.score.toFixed(2)}
+                    {stock.score.toFixed(Number_Fix)}
                   </span>
                 ) : (
                   <span className="text-red-500">{stock.score.toFixed(2)}</span>
