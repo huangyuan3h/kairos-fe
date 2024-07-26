@@ -105,6 +105,7 @@ export const StockTable: React.FC<StockTableProps> = ({
             <TableHead>1天涨跌幅</TableHead>
             <TableHead>3天涨跌幅</TableHead>
             <TableHead>5天涨跌幅</TableHead>
+            <TableHead>7天涨跌幅</TableHead>
             <TableHead>10天涨跌幅</TableHead>
             <TableHead
               onClick={handleUpdateScoreSorting}
@@ -155,6 +156,17 @@ export const StockTable: React.FC<StockTableProps> = ({
                 ) : (
                   <span className="text-red-500">
                     {stock.change_5d.toFixed(Number_Fix)}%
+                  </span>
+                )}
+              </TableCell>
+              <TableCell>
+                {stock.change_7d > 0 ? (
+                  <span className="text-green-500">
+                    +{stock.change_7d.toFixed(Number_Fix)}%
+                  </span>
+                ) : (
+                  <span className="text-red-500">
+                    {stock.change_7d.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>

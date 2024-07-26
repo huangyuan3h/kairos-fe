@@ -1,11 +1,17 @@
 export interface PredictReportType {
-  model: string;
+  model_version: string;
   report_date: string;
-  change_10d: number;
   stock_code: string;
   change_1d: number;
+  change_2d: number;
   change_3d: number;
+  change_4d: number;
   change_5d: number;
+  change_6d: number;
+  change_7d: number;
+  change_8d: number;
+  change_9d: number;
+  change_10d: number;
   id: string;
   score?: number;
 }

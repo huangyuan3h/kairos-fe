@@ -6,9 +6,9 @@ import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
-  [InvestmentHorizon.ShortTerm]: [1.1, 1.3, 0.9, 0.7],
-  [InvestmentHorizon.MidTerm]: [0.8, 1.2, 1.2, 0.8],
-  [InvestmentHorizon.LongTerm]: [0.7, 0.9, 1.3, 1.1],
+  [InvestmentHorizon.ShortTerm]: [110, 130, 90, 70],
+  [InvestmentHorizon.MidTerm]: [80, 130, 110, 80],
+  [InvestmentHorizon.LongTerm]: [70, 90, 130, 110],
 };
 
 export const calculateDecisionScore = (
@@ -38,19 +38,19 @@ export const makeDecision = (
 
   switch (riskTolerance) {
     case RiskTolerance.aggressive:
-      buyThreshold = 1.2;
-      holdThreshold = 0.4;
-      waitThreshold = 0;
+      buyThreshold = 15;
+      holdThreshold = 11;
+      waitThreshold = 6;
       break;
     case RiskTolerance.moderate:
-      buyThreshold = 1.6;
-      holdThreshold = 0.8;
-      waitThreshold = 0.4;
+      buyThreshold = 20;
+      holdThreshold = 16;
+      waitThreshold = 8;
       break;
     case RiskTolerance.conservative:
-      buyThreshold = 2;
-      holdThreshold = 1.2;
-      waitThreshold = 0.6;
+      buyThreshold = 30;
+      holdThreshold = 22;
+      waitThreshold = 12;
       break;
     default:
       throw new Error(`Invalid risk tolerance: ${riskTolerance}`);
