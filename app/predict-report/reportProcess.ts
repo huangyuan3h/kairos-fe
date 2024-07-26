@@ -6,25 +6,49 @@ import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
-  [InvestmentHorizon.ShortTerm]: [110, 130, 90, 70],
-  [InvestmentHorizon.MidTerm]: [80, 130, 110, 80],
-  [InvestmentHorizon.LongTerm]: [70, 90, 130, 110],
+  [InvestmentHorizon.ShortTerm]: [70, 85, 130, 115, 100, 85, 70, 55, 40, 25],
+  [InvestmentHorizon.MidTerm]: [60, 75, 90, 105, 130, 105, 90, 75, 60, 45],
+  [InvestmentHorizon.LongTerm]: [50, 60, 70, 80, 90, 110, 130, 110, 90, 70],
 };
+
+const BE_weights = [
+  0.15353399, 0.13818059, 0.12436253, 0.11192628, 0.10073365, 0.09066029,
+  0.08159426, 0.07343483, 0.06609135, 0.05948221,
+];
 
 export const calculateDecisionScore = (
   report: PredictReportType,
   investmentHorizon: InvestmentHorizon
 ): number => {
-  const { change_1d, change_3d, change_5d, change_10d } = report;
+  const {
+    change_1d,
+    change_2d,
+    change_3d,
+    change_4d,
+    change_5d,
+    change_6d,
+    change_7d,
+    change_8d,
+    change_9d,
+    change_10d,
+  } = report;
 
-  const [weight1, weight3, weight5, weight10] =
+  const [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10] =
     InvestmentHorizonMapping[investmentHorizon];
 
+  const [s1, s2, s3, s4, s5, s6, s7, s8, s9, s10] = BE_weights;
+
   const decisionScore =
-    change_1d * weight1 +
-    change_3d * 0.33 * weight3 +
-    change_5d * 0.2 * weight5 +
-    change_10d * 0.1 * weight10;
+    change_1d * w1 * s1 +
+    change_2d * w2 * s2 +
+    change_3d * w3 * s3 +
+    change_4d * w4 * s4 +
+    change_5d * w5 * s5 +
+    change_6d * w6 * s6 +
+    change_7d * w7 * s7 +
+    change_8d * w8 * s8 +
+    change_9d * w9 * s9 +
+    change_10d * w10 * s10;
 
   return decisionScore / 4;
 };
