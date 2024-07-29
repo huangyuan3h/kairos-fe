@@ -11,9 +11,10 @@ export default {
   },
   stacks(app) {
     app.stack(function Site({ stack }) {
-      const { stockPredictReport } = getTableConfig(stack);
+      const { stockPredictReport, stockClassifyPredictReport } =
+        getTableConfig(stack);
       const site = new NextjsSite(stack, "site", {
-        bind: [stockPredictReport],
+        bind: [stockPredictReport, stockClassifyPredictReport],
       });
 
       stack.addOutputs({

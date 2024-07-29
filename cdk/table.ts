@@ -18,5 +18,18 @@ export const getTableConfig = (stack: Stack) => {
     },
   });
 
-  return { stockPredictReport };
+  const stockClassifyPredictReport = new Table(stack, "stockClassifyPredict", {
+    fields: {
+      id: "string",
+      report_date: "string",
+      stock_code: "string",
+      model: "string",
+    },
+    primaryIndex: { partitionKey: "id" },
+    globalIndexes: {
+      all: { partitionKey: "report_date" },
+    },
+  });
+
+  return { stockPredictReport, stockClassifyPredictReport };
 };

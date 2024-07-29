@@ -62,19 +62,19 @@ export const makeDecision = (
 
   switch (riskTolerance) {
     case RiskTolerance.aggressive:
-      buyThreshold = 15;
-      holdThreshold = 11;
-      waitThreshold = 6;
-      break;
-    case RiskTolerance.moderate:
-      buyThreshold = 20;
-      holdThreshold = 16;
+      buyThreshold = 30;
+      holdThreshold = 10;
       waitThreshold = 8;
       break;
+    case RiskTolerance.moderate:
+      buyThreshold = 50;
+      holdThreshold = 20;
+      waitThreshold = 16;
+      break;
     case RiskTolerance.conservative:
-      buyThreshold = 30;
-      holdThreshold = 22;
-      waitThreshold = 12;
+      buyThreshold = 70;
+      holdThreshold = 40;
+      waitThreshold = 24;
       break;
     default:
       throw new Error(`Invalid risk tolerance: ${riskTolerance}`);
