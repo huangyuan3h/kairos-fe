@@ -21,3 +21,15 @@ export interface PredictReportDisplayType extends PredictReportType {
   name: string;
   recommendation: string;
 }
+
+export interface PredictClassifyReportType {
+  model_version: string;
+  report_date: string;
+  stock_code: string;
+  rise: number;
+  jitter: number;
+  fall: number;
+  predict_class: number;
+  id: string;
+  score?: number;
+}

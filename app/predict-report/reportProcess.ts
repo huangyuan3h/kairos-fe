@@ -1,4 +1,5 @@
 import {
+  PredictClassifyReportType,
   PredictReportDisplayType,
   PredictReportType,
 } from "@/types/stock-report";
@@ -18,7 +19,8 @@ const BE_weights = [
 
 export const calculateDecisionScore = (
   report: PredictReportType,
-  investmentHorizon: InvestmentHorizon
+  investmentHorizon: InvestmentHorizon,
+  predict_class?: number
 ): number => {
   const {
     change_1d,
@@ -50,7 +52,14 @@ export const calculateDecisionScore = (
     change_9d * w9 * s9 +
     change_10d * w10 * s10;
 
-  return decisionScore / 4;
+  let finalScore = decisionScore;
+  if (predict_class === 0) {
+    finalScore = finalScore - 120;
+  } else if (predict_class === 2) {
+    finalScore = finalScore + 120;
+  }
+
+  return finalScore;
 };
 
 export const makeDecision = (
@@ -62,19 +71,19 @@ export const makeDecision = (
 
   switch (riskTolerance) {
     case RiskTolerance.aggressive:
-      buyThreshold = 30;
-      holdThreshold = 10;
-      waitThreshold = 8;
-      break;
-    case RiskTolerance.moderate:
-      buyThreshold = 50;
+      buyThreshold = 120;
       holdThreshold = 20;
       waitThreshold = 16;
       break;
-    case RiskTolerance.conservative:
-      buyThreshold = 70;
+    case RiskTolerance.moderate:
+      buyThreshold = 200;
       holdThreshold = 40;
-      waitThreshold = 24;
+      waitThreshold = 32;
+      break;
+    case RiskTolerance.conservative:
+      buyThreshold = 280;
+      holdThreshold = 60;
+      waitThreshold = 64;
       break;
     default:
       throw new Error(`Invalid risk tolerance: ${riskTolerance}`);
@@ -95,15 +104,24 @@ export const makeDecision = (
 export const getHorizonData = (
   data: PredictReportType[],
   investmentHorizon: InvestmentHorizon,
-  tolerance: RiskTolerance
+  tolerance: RiskTolerance,
+  classify: PredictClassifyReportType[]
 ) => {
   const mappedData: PredictReportDisplayType[] = data.map((report) => {
-    const score = calculateDecisionScore(report, investmentHorizon);
+    const predict_class = classify.find(
+      (c) => c.stock_code === report.stock_code
+    )?.predict_class;
+    const score = calculateDecisionScore(
+      report,
+      investmentHorizon,
+      predict_class
+    );
     return {
       ...report,
       name: stockNameConfig[report.stock_code],
       score,
       recommendation: makeDecision(score, tolerance),
+      predict_class,
     };
   });
 

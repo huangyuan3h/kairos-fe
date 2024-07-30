@@ -16,6 +16,7 @@ import {
   MoveInAction,
   MoveOutAction,
 } from "./components/table-action";
+import { fetchClassifyStockReportByDate } from "./fetchClassifyReportByDate";
 
 const PredictReport = () => {
   const [reportDate, setReportDate] = useState<string>(getLastBusinessDay);
@@ -57,6 +58,11 @@ const PredictReport = () => {
     fetchStockReportByDate(reportDate)
   );
 
+  const { data: classifyReports } = useSWR(
+    `api/classifyReportDate?date=${reportDate}`,
+    () => fetchClassifyStockReportByDate(reportDate)
+  );
+
   const handleReportDateChange = (date: string) => {
     setReportDate(date);
   };
@@ -88,8 +94,13 @@ const PredictReport = () => {
 
   let tableData = null;
 
-  if (reports) {
-    tableData = getHorizonData(reports, selectedHorizon, riskTolerance);
+  if (reports && classifyReports) {
+    tableData = getHorizonData(
+      reports,
+      selectedHorizon,
+      riskTolerance,
+      classifyReports
+    );
   }
 
   const handleSearchTextChanged = (text: string) => {

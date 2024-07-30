@@ -1,4 +1,4 @@
-import { PredictReportType } from "@/types/stock-report";
+import { PredictClassifyReportType } from "@/types/stock-report";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 
@@ -6,11 +6,11 @@ import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
 const client = new DynamoDBClient({});
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
-const tableName = process.env.STOCK_PREDICT_REPORT;
+const tableName = process.env.STOCK_PREDICT_CLASSIFY_REPORT;
 
 const fetchStockReportByDate = async (
   date: string
-): Promise<PredictReportType[]> => {
+): Promise<PredictClassifyReportType[]> => {
   try {
     // Define the filter expression and values
     const filterExpression = "#fieldName = :fieldValue";
@@ -29,7 +29,7 @@ const fetchStockReportByDate = async (
     });
 
     const data = await ddbDocClient.send(command);
-    return data.Items as PredictReportType[];
+    return data.Items as PredictClassifyReportType[];
   } catch (error) {
     console.error("Error fetching filtered data:", error);
     throw error;
