@@ -57,6 +57,8 @@ const PAGE_SIZE = 10;
 
 const Number_Fix = 4;
 
+const predictClass = ["下跌", "震荡", "上涨"];
+
 export const StockTable: React.FC<StockTableProps> = ({
   reportData,
   ExtraHeader,
@@ -107,6 +109,7 @@ export const StockTable: React.FC<StockTableProps> = ({
             <TableHead>5天涨跌幅</TableHead>
             <TableHead>7天涨跌幅</TableHead>
             <TableHead>10天涨跌幅</TableHead>
+            <TableHead>趋势评估</TableHead>
             <TableHead
               onClick={handleUpdateScoreSorting}
               className="cursor-pointer"
@@ -181,6 +184,7 @@ export const StockTable: React.FC<StockTableProps> = ({
                   </span>
                 )}
               </TableCell>
+              <TableCell>{predictClass[stock.predict_class]}</TableCell>
               <TableCell>
                 {stock.score > 0 ? (
                   <span className="text-green-500">

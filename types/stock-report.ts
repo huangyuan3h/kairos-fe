@@ -20,6 +20,7 @@ export interface PredictReportDisplayType extends PredictReportType {
   score: number;
   name: string;
   recommendation: string;
+  predict_class: number;
 }
 
 export interface PredictClassifyReportType {
