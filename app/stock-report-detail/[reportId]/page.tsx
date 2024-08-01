@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { subMonths, format } from "date-fns";
 import StockChart from "./components/stock-chart";
 import { PredictReportType } from "@/types/stock-report";
+import { ClassifyArea } from "./components/classify-area";
 
 const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
   const [reportId, classifyId] = params.reportId.split("-");
@@ -103,7 +104,9 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
           />
         )}
       </div>
-
+      <div className="mt-4">
+        <ClassifyArea />
+      </div>
       {/* <div>{JSON.stringify(classify)}</div> */}
     </div>
   );
