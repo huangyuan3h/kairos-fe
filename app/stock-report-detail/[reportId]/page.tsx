@@ -79,7 +79,7 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
   for (let i = 1; i <= 10; i++) {
     const key = `change_${i}d`;
     const obj = {
-      date: `${i} day`,
+      date: `${i}个交易日`,
       predict:
         ((100 + (report[key as keyof PredictReportType] as number)) *
           currentClose) /

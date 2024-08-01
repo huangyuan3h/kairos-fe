@@ -42,7 +42,10 @@ const StockChart: React.FC<StockChartProps> = ({ stockCode, historyData }) => {
         <CardDescription>January - June 2024</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          style={{ width: "100%", height: "300px" }}
+        >
           <LineChart accessibilityLayer data={historyData}>
             <CartesianGrid vertical={false} horizontal={true} />
             <XAxis
@@ -51,7 +54,14 @@ const StockChart: React.FC<StockChartProps> = ({ stockCode, historyData }) => {
               axisLine={false}
               tickFormatter={(value) => value}
             />
-            <YAxis tickLine={false} axisLine={false} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              domain={[
+                (dataMin: number) => Math.floor(dataMin * 0.9),
+                (dataMax: number) => Math.ceil(dataMax * 1.1),
+              ]}
+            />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
               dataKey="history"
@@ -67,6 +77,7 @@ const StockChart: React.FC<StockChartProps> = ({ stockCode, historyData }) => {
               type="natural"
               stroke="var(--color-predict)"
               strokeWidth={1}
+              strokeDasharray="5 5"
               dot={{
                 fill: "var(--color-predict)",
               }}
