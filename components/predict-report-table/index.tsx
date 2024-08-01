@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { PredictReportDisplayType } from "@/types/stock-report";
+import { useRouter } from "next/navigation";
 
 export interface ExtraColumnProps {
   stock: PredictReportDisplayType;
@@ -69,6 +70,7 @@ export const StockTable: React.FC<StockTableProps> = ({
 
   const [currentPage, setCurrentPage] = React.useState(0);
   const lastPage = Math.floor(reportData.length / PAGE_SIZE);
+  const router = useRouter();
 
   const sortedData = [...reportData].sort((a, b) => {
     if (sortByScore === "asc") {
@@ -98,6 +100,9 @@ export const StockTable: React.FC<StockTableProps> = ({
   const handleSetPage = (page: number) => {
     setCurrentPage(page);
   };
+  const handleClickItem = (reportId: string) => {
+    router.push(`/stock-report-detail/${reportId}`);
+  };
   return (
     <>
       <Table>
@@ -122,7 +127,13 @@ export const StockTable: React.FC<StockTableProps> = ({
         </TableHeader>
         <TableBody>
           {displayData.map((stock, index) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              className="cursor-pointer"
+              onClick={() =>
+                handleClickItem(stock.id + "-" + stock.classifyReportId)
+              }
+            >
               <TableCell>
                 <div className="font-medium">{stock.name}</div>
                 <div className="hidden text-sm text-muted-foreground md:inline">

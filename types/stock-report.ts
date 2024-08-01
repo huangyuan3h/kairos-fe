@@ -21,6 +21,7 @@ export interface PredictReportDisplayType extends PredictReportType {
   name: string;
   recommendation: string;
   predict_class: number;
+  classifyReportId: string;
 }
 
 export interface PredictClassifyReportType {

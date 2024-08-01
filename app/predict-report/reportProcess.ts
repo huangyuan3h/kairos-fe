@@ -108,9 +108,12 @@ export const getHorizonData = (
   classify: PredictClassifyReportType[]
 ) => {
   const mappedData: PredictReportDisplayType[] = data.map((report) => {
-    const predict_class =
-      classify.find((c) => c.stock_code === report.stock_code)?.predict_class ??
-      1;
+    const classifyReport = classify.find(
+      (c) => c.stock_code === report.stock_code
+    );
+
+    const predict_class = classifyReport?.predict_class ?? 1;
+
     const score = calculateDecisionScore(
       report,
       investmentHorizon,
@@ -122,6 +125,7 @@ export const getHorizonData = (
       score,
       recommendation: makeDecision(score, tolerance),
       predict_class,
+      classifyReportId: classifyReport?.id ?? "",
     };
   });
 
