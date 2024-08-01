@@ -4,13 +4,11 @@ interface PredictReportResponseType {
   predicts: PredictReportType;
 }
 
-export const getReportById = async (
-  id: string
-): Promise<PredictReportResponseType> => {
+export const getReportById = async (id: string): Promise<PredictReportType> => {
   const response = await fetch(`/api/get-report-by-id/${id}`, {
     method: "GET",
   });
-  const report = await response.json();
+  const report: PredictReportResponseType = await response.json();
 
   return report.predicts;
 };
