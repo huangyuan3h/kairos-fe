@@ -8,6 +8,8 @@ import { getReportById } from "./get_report_by_id";
 import { getClassifyById } from "./get_classify_by_id";
 import { useEffect, useState } from "react";
 import { subMonths, format } from "date-fns";
+import StockChart from "./components/stock-chart";
+import { PredictReportType } from "@/types/stock-report";
 
 const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
   const [reportId, classifyId] = params.reportId.split("-");
@@ -30,7 +32,7 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
     if (!isLoading && report) {
       setStockCode(report.stock_code);
       const date = new Date(report.report_date);
-      const threeMonthsAgo = subMonths(date, 3);
+      const threeMonthsAgo = subMonths(date, 2);
       setStartDate(format(threeMonthsAgo, "yyyyMMdd"));
       setEndDate(format(date, "yyyyMMdd"));
     }
@@ -43,11 +45,48 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
       allExisted ? stockZhAHist(stockCode, "daily", startDate, endDate) : null
   );
 
+  if (!stockLine || !report) {
+    return null;
+  }
+
+  const historyData = stockLine
+    .slice(stockLine.length - 20, stockLine.length)
+    .map((l, idx) => {
+      if (idx === 19) {
+        return {
+          date: l.date,
+          history: l.close,
+          predict: l.close,
+        };
+      }
+      return {
+        date: l.date,
+        history: l.close,
+      };
+    });
+
   const router = useRouter();
 
   const handleClickBack = () => {
     router.back();
   };
+
+  const currentClose =
+    historyData && historyData[historyData.length - 1].history;
+
+  const predictData = [];
+
+  for (let i = 1; i <= 10; i++) {
+    const key = `change_${i}d`;
+    const obj = {
+      date: `${i} day`,
+      predict:
+        ((100 + (report[key as keyof PredictReportType] as number)) *
+          currentClose) /
+        100,
+    };
+    predictData.push(obj);
+  }
 
   return (
     <div className="bg-muted/40 p-4">
@@ -56,9 +95,16 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
           <ChevronLeft className="h-4 w-4" /> Back
         </Button>
       </div>
-      <div>{JSON.stringify(report)}</div>
-      <div>{JSON.stringify(classify)}</div>
-      <div>{JSON.stringify(stockLine)}</div>
+      <div>
+        {stockCode && historyData && (
+          <StockChart
+            stockCode={stockCode ?? ""}
+            historyData={[...historyData, ...predictData]}
+          />
+        )}
+      </div>
+
+      {/* <div>{JSON.stringify(classify)}</div> */}
     </div>
   );
 };
