@@ -6,11 +6,10 @@ export const getTableConfig = (stack: Stack) => {
       id: "string",
       report_date: "string",
       stock_code: "string",
-      model: "string",
       change_1d: "number",
+      change_2d: "number",
       change_3d: "number",
-      change_5d: "number",
-      change_10d: "number",
+      trend: "number",
     },
     primaryIndex: { partitionKey: "id" },
     globalIndexes: {
@@ -18,18 +17,5 @@ export const getTableConfig = (stack: Stack) => {
     },
   });
 
-  const stockClassifyPredictReport = new Table(stack, "stockClassifyPredict", {
-    fields: {
-      id: "string",
-      report_date: "string",
-      stock_code: "string",
-      model: "string",
-    },
-    primaryIndex: { partitionKey: "id" },
-    globalIndexes: {
-      all: { partitionKey: "report_date" },
-    },
-  });
-
-  return { stockPredictReport, stockClassifyPredictReport };
+  return { stockPredictReport };
 };
