@@ -5,24 +5,16 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getReportById } from "./get_report_by_id";
-import { getClassifyById } from "./get_classify_by_id";
 import { useEffect, useState } from "react";
 import { subMonths, format } from "date-fns";
 import StockChart from "./components/stock-chart";
 import { PredictReportType } from "@/types/stock-report";
-import { ClassifyArea } from "./components/classify-area";
-
 const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
-  const [reportId, classifyId] = params.reportId.split("-");
+  const reportId = params.reportId;
 
   const { data: report, isLoading } = useSWR(
     `api/get-report-by-id/${reportId}`,
     () => getReportById(reportId)
-  );
-
-  const { data: classify } = useSWR(
-    `api/get-classify-by-id/${classifyId}`,
-    () => getClassifyById(classifyId)
   );
 
   const [stockCode, setStockCode] = useState<null | string>(null);
@@ -77,7 +69,7 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
 
   const predictData = [];
 
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 3; i++) {
     const key = `change_${i}d`;
     const obj = {
       date: `${i}个交易日`,
@@ -104,10 +96,6 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
           />
         )}
       </div>
-      <div className="mt-4">
-        <ClassifyArea />
-      </div>
-      {/* <div>{JSON.stringify(classify)}</div> */}
     </div>
   );
 };

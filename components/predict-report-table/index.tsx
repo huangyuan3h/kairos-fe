@@ -110,11 +110,9 @@ export const StockTable: React.FC<StockTableProps> = ({
           <TableRow>
             <TableHead>股票名称/代码</TableHead>
             <TableHead>1天涨跌幅</TableHead>
+            <TableHead>2天涨跌幅</TableHead>
             <TableHead>3天涨跌幅</TableHead>
-            <TableHead>5天涨跌幅</TableHead>
-            <TableHead>7天涨跌幅</TableHead>
-            <TableHead>10天涨跌幅</TableHead>
-            <TableHead>趋势评估</TableHead>
+            <TableHead>未来10天趋势</TableHead>
             <TableHead
               onClick={handleUpdateScoreSorting}
               className="cursor-pointer"
@@ -130,9 +128,7 @@ export const StockTable: React.FC<StockTableProps> = ({
             <TableRow
               key={index}
               className="cursor-pointer"
-              onClick={() =>
-                handleClickItem(stock.id + "-" + stock.classifyReportId)
-              }
+              onClick={() => handleClickItem(stock.id)}
             >
               <TableCell>
                 <div className="font-medium">{stock.name}</div>
@@ -152,6 +148,17 @@ export const StockTable: React.FC<StockTableProps> = ({
                 )}
               </TableCell>
               <TableCell>
+                {stock.change_2d > 0 ? (
+                  <span className="text-green-500">
+                    +{stock.change_2d.toFixed(Number_Fix)}%
+                  </span>
+                ) : (
+                  <span className="text-red-500">
+                    {stock.change_2d.toFixed(Number_Fix)}%
+                  </span>
+                )}
+              </TableCell>
+              <TableCell>
                 {stock.change_3d > 0 ? (
                   <span className="text-green-500">
                     +{stock.change_3d.toFixed(Number_Fix)}%
@@ -163,39 +170,16 @@ export const StockTable: React.FC<StockTableProps> = ({
                 )}
               </TableCell>
               <TableCell>
-                {stock.change_5d > 0 ? (
+                {stock.trend > 0 ? (
                   <span className="text-green-500">
-                    +{stock.change_5d.toFixed(Number_Fix)}%
+                    +{stock.trend.toFixed(Number_Fix)}%
                   </span>
                 ) : (
                   <span className="text-red-500">
-                    {stock.change_5d.toFixed(Number_Fix)}%
+                    {stock.trend.toFixed(Number_Fix)}%
                   </span>
                 )}
               </TableCell>
-              <TableCell>
-                {stock.change_7d > 0 ? (
-                  <span className="text-green-500">
-                    +{stock.change_7d.toFixed(Number_Fix)}%
-                  </span>
-                ) : (
-                  <span className="text-red-500">
-                    {stock.change_7d.toFixed(Number_Fix)}%
-                  </span>
-                )}
-              </TableCell>
-              <TableCell>
-                {stock.change_10d > 0 ? (
-                  <span className="text-green-500">
-                    +{stock.change_10d.toFixed(Number_Fix)}%
-                  </span>
-                ) : (
-                  <span className="text-red-500">
-                    {stock.change_10d.toFixed(Number_Fix)}%
-                  </span>
-                )}
-              </TableCell>
-              <TableCell>{predictClass[stock.predict_class]}</TableCell>
               <TableCell>
                 {stock.score > 0 ? (
                   <span className="text-green-500">
