@@ -1,5 +1,4 @@
 "use client";
-import { PredictReportType } from "@/types/stock-report";
 import { TableBar } from "./components/table-bar";
 import {
   fetchStockReportByDate,

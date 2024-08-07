@@ -15,8 +15,7 @@ const BE_weights = [0.15353399, 0.13818059, 0.12436253, 0.08];
 
 export const calculateDecisionScore = (
   report: PredictReportType,
-  investmentHorizon: InvestmentHorizon,
-  predict_class?: number
+  investmentHorizon: InvestmentHorizon
 ): number => {
   const { change_1d, change_2d, change_3d, trend } = report;
 
@@ -30,14 +29,7 @@ export const calculateDecisionScore = (
     change_3d * w3 * s3 +
     trend * w4 * s4;
 
-  let finalScore = decisionScore;
-  if (predict_class === 0) {
-    finalScore = finalScore - 120;
-  } else if (predict_class === 2) {
-    finalScore = finalScore + 120;
-  }
-
-  return finalScore;
+  return decisionScore;
 };
 
 export const makeDecision = (
@@ -49,19 +41,19 @@ export const makeDecision = (
 
   switch (riskTolerance) {
     case RiskTolerance.aggressive:
-      buyThreshold = 120;
-      holdThreshold = 20;
-      waitThreshold = 16;
+      buyThreshold = 110;
+      holdThreshold = 30;
+      waitThreshold = 0;
       break;
     case RiskTolerance.moderate:
-      buyThreshold = 200;
-      holdThreshold = 40;
-      waitThreshold = 32;
+      buyThreshold = 150;
+      holdThreshold = 70;
+      waitThreshold = 40;
       break;
     case RiskTolerance.conservative:
-      buyThreshold = 280;
-      holdThreshold = 60;
-      waitThreshold = 64;
+      buyThreshold = 190;
+      holdThreshold = 90;
+      waitThreshold = 60;
       break;
     default:
       throw new Error(`Invalid risk tolerance: ${riskTolerance}`);

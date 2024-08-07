@@ -58,8 +58,6 @@ const PAGE_SIZE = 10;
 
 const Number_Fix = 4;
 
-const predictClass = ["下跌", "震荡", "上涨"];
-
 export const StockTable: React.FC<StockTableProps> = ({
   reportData,
   ExtraHeader,
