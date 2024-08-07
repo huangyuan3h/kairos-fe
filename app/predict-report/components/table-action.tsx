@@ -16,8 +16,10 @@ export const MoveInAction: React.FC<ExtraColumnProps> = ({
   stock,
   onExtraClick,
 }: ExtraColumnProps) => {
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (onExtraClick) onExtraClick(MoveAction.MOVE_IN, stock.stock_code);
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   return (
@@ -33,8 +35,10 @@ export const MoveOutAction: React.FC<ExtraColumnProps> = ({
   stock,
   onExtraClick,
 }: ExtraColumnProps) => {
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (onExtraClick) onExtraClick(MoveAction.MOVE_OUT, stock.stock_code);
+    e.stopPropagation();
+    e.preventDefault();
   };
 
   return (

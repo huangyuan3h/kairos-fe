@@ -4,6 +4,7 @@ import {
   fetchStockReportByDate,
   getLastBusinessDay,
 } from "./fetchReportByDate";
+import { toast } from "sonner";
 
 import useSWR from "swr";
 import { useEffect, useState } from "react";
@@ -76,9 +77,11 @@ const PredictReport = () => {
     switch (action) {
       case "MOVE_IN":
         handleAddStock(stockCode);
+        toast(`Stock code ${stockCode} has been added into my stock tab!`);
         break;
       case "MOVE_OUT":
         handleRemoveStock(stockCode);
+        toast(`Stock code ${stockCode} has been removed!`);
         break;
       default:
         break;
