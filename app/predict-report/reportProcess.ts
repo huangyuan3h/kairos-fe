@@ -6,12 +6,12 @@ import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
-  [InvestmentHorizon.ShortTerm]: [120, 100, 80],
-  [InvestmentHorizon.MidTerm]: [100, 120, 80],
-  [InvestmentHorizon.LongTerm]: [100, 100, 100],
+  [InvestmentHorizon.ShortTerm]: [120, 100, 80, 40],
+  [InvestmentHorizon.MidTerm]: [100, 120, 80, 60],
+  [InvestmentHorizon.LongTerm]: [100, 100, 100, 80],
 };
 
-const BE_weights = [0.15353399, 0.13818059, 0.12436253];
+const BE_weights = [0.15353399, 0.13818059, 0.12436253, 0.08];
 
 export const calculateDecisionScore = (
   report: PredictReportType,
@@ -20,12 +20,15 @@ export const calculateDecisionScore = (
 ): number => {
   const { change_1d, change_2d, change_3d, trend } = report;
 
-  const [w1, w2, w3] = InvestmentHorizonMapping[investmentHorizon];
+  const [w1, w2, w3, w4] = InvestmentHorizonMapping[investmentHorizon];
 
-  const [s1, s2, s3] = BE_weights;
+  const [s1, s2, s3, s4] = BE_weights;
 
   const decisionScore =
-    change_1d * w1 * s1 + change_2d * w2 * s2 + change_3d * w3 * s3 + trend;
+    change_1d * w1 * s1 +
+    change_2d * w2 * s2 +
+    change_3d * w3 * s3 +
+    trend * w4 * s4;
 
   let finalScore = decisionScore;
   if (predict_class === 0) {
