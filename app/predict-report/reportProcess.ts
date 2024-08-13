@@ -6,29 +6,31 @@ import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
-  [InvestmentHorizon.ShortTerm]: [120, 100, 80, 40],
-  [InvestmentHorizon.MidTerm]: [100, 120, 80, 60],
-  [InvestmentHorizon.LongTerm]: [100, 100, 100, 80],
+  [InvestmentHorizon.ShortTerm]: [120, 100, 80, 40, 20, 20],
+  [InvestmentHorizon.MidTerm]: [100, 120, 80, 60, 20, 20],
+  [InvestmentHorizon.LongTerm]: [100, 100, 100, 80, 20, 20],
 };
 
-const BE_weights = [0.15353399, 0.13818059, 0.12436253, 0.08];
+const BE_weights = [0.15353399, 0.13818059, 0.12436253, 0.08, 0.1, 0.1];
 
 export const calculateDecisionScore = (
   report: PredictReportType,
   investmentHorizon: InvestmentHorizon
 ): number => {
-  const { change_1d, change_2d, change_3d, trend } = report;
+  const { change_1d, change_2d, change_3d, trend, operation_1d, operation_2d } =
+    report;
 
-  const [w1, w2, w3, w4] = InvestmentHorizonMapping[investmentHorizon];
+  const [w1, w2, w3, w4, w5, w6] = InvestmentHorizonMapping[investmentHorizon];
 
-  const [s1, s2, s3, s4] = BE_weights;
+  const [s1, s2, s3, s4, s5, s6] = BE_weights;
 
   const decisionScore =
     change_1d * w1 * s1 +
     change_2d * w2 * s2 +
     change_3d * w3 * s3 +
-    trend * w4 * s4;
-
+    trend * w4 * s4 +
+    operation_1d * w5 * s5 +
+    operation_2d * w6 * s6;
   return decisionScore;
 };
 
