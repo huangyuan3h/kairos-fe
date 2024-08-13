@@ -5,6 +5,8 @@ export interface PredictReportType {
   change_2d: number;
   change_3d: number;
   trend: number;
+  operation_1d: number;
+  operation_2d: number;
   id: string;
   score?: number;
 }
