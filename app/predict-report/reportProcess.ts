@@ -6,12 +6,12 @@ import stockNameConfig from "../../config/stock_config";
 import { InvestmentHorizon, RiskTolerance } from "./types";
 
 const InvestmentHorizonMapping = {
-  [InvestmentHorizon.ShortTerm]: [120, 100, 80, 40, 20, 20],
-  [InvestmentHorizon.MidTerm]: [100, 120, 80, 60, 20, 20],
-  [InvestmentHorizon.LongTerm]: [100, 100, 100, 80, 20, 20],
+  [InvestmentHorizon.ShortTerm]: [120, 100, 80, 40, 100, 100],
+  [InvestmentHorizon.MidTerm]: [100, 120, 80, 60, 100, 100],
+  [InvestmentHorizon.LongTerm]: [100, 100, 100, 80, 100, 100],
 };
 
-const BE_weights = [0.15353399, 0.13818059, 0.12436253, 0.08, 0.1, 0.1];
+const BE_weights = [0.15, 0.15, 0.15, 0.15, 0.2, 0.2];
 
 export const calculateDecisionScore = (
   report: PredictReportType,

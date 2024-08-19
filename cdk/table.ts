@@ -10,6 +10,8 @@ export const getTableConfig = (stack: Stack) => {
       change_2d: "number",
       change_3d: "number",
       trend: "number",
+      operation_1d: "number",
+      operation_2d: "number",
     },
     primaryIndex: { partitionKey: "id" },
     globalIndexes: {
