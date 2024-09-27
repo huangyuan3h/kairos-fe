@@ -1,6 +1,6 @@
 import { PredictReportType } from "@/types/stock-report";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import { DynamoDBDocumentClient, QueryCommand } from "@aws-sdk/lib-dynamodb";
 
 // Create a DynamoDB client
 const client = new DynamoDBClient({});
@@ -12,19 +12,16 @@ const fetchStockReportById = async (
   id: string
 ): Promise<PredictReportType | null> => {
   try {
-    const filterExpression = "#fieldName = :fieldValue";
-    const expressionAttributeNames = {
-      "#fieldName": "id", // Replace with the actual field name
-    };
-    const expressionAttributeValues = {
-      ":fieldValue": id, // Replace with the value to filter
-    };
-
-    const command = new ScanCommand({
+    // Use QueryCommand instead of ScanCommand
+    const command = new QueryCommand({
       TableName: tableName,
-      FilterExpression: filterExpression,
-      ExpressionAttributeNames: expressionAttributeNames,
-      ExpressionAttributeValues: expressionAttributeValues,
+      KeyConditionExpression: "#idField = :idValue",
+      ExpressionAttributeNames: {
+        "#idField": "id", // Replace with actual partition key if needed
+      },
+      ExpressionAttributeValues: {
+        ":idValue": id,
+      },
     });
 
     const data = await ddbDocClient.send(command);
@@ -33,7 +30,7 @@ const fetchStockReportById = async (
     }
     return null;
   } catch (error) {
-    console.error("Error fetching filtered data:", error);
+    console.error("Error fetching data by ID:", error);
     throw error;
   }
 };
@@ -41,7 +38,7 @@ const fetchStockReportById = async (
 export async function GET(request: Request) {
   const parts = request.url.split("/");
   const id = parts[parts.length - 1];
-  const predicts = await fetchStockReportById(id);
+  const predict = await fetchStockReportById(id);
 
-  return Response.json({ predicts });
+  return Response.json({ predict });
 }
