@@ -38,7 +38,7 @@ const fetchStockReportById = async (
 export async function GET(request: Request) {
   const parts = request.url.split("/");
   const id = parts[parts.length - 1];
-  const predict = await fetchStockReportById(id);
+  const predicts = await fetchStockReportById(id);
 
-  return Response.json({ predict });
+  return Response.json({ predicts });
 }
