@@ -41,7 +41,6 @@ const chartConfig = {
 const ReportDetail: React.FC<ReportDetailProps> = ({
   report,
 }: ReportDetailProps) => {
-  console.log(report);
   const positiveScore = report.filter((r) => r.score > 0).length;
   const negitiveScore = report.filter((r) => r.score < 0).length;
   const chartData = [
