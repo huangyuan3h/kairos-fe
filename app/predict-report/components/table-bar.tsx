@@ -21,9 +21,11 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import { Settings, Search } from "lucide-react";
+import { Settings, Search, ReceiptText } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import ReportDetail from "./ReportDetail";
+import { PredictReportDisplayType } from "@/types/stock-report";
 
 const styleOfButton =
   "inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-3  gap-1";
@@ -77,6 +79,7 @@ interface TableBarProps {
   onSearchTextChanged: (text: string) => void;
   tab: TabEnum;
   onTabChanged: (tab: TabEnum) => void;
+  report: PredictReportDisplayType[];
 }
 
 export const TableBar: React.FC<TableBarProps> = ({
@@ -90,6 +93,7 @@ export const TableBar: React.FC<TableBarProps> = ({
   onSearchTextChanged,
   tab,
   onTabChanged,
+  report,
 }: TableBarProps) => {
   const currentDate = new Date(reportDate);
 
@@ -141,6 +145,9 @@ export const TableBar: React.FC<TableBarProps> = ({
         <div>
           <DatePicker date={currentDate} onChange={handleDatePickerChange} />
         </div>
+
+        <ReportDetail report={report} />
+
         <Sheet>
           <SheetTrigger className={styleOfButton}>
             <Settings className="h-4 w-4" />

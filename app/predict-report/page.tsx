@@ -90,8 +90,11 @@ const PredictReport = () => {
 
   let tableData = null;
 
+  let mappedReport = null;
+
   if (reports) {
-    tableData = getHorizonData(reports, selectedHorizon, riskTolerance);
+    mappedReport = getHorizonData(reports, selectedHorizon, riskTolerance);
+    tableData = [...mappedReport];
   }
 
   const handleSearchTextChanged = (text: string) => {
@@ -119,6 +122,7 @@ const PredictReport = () => {
         onSearchTextChanged={handleSearchTextChanged}
         tab={tab}
         onTabChanged={handleTabChanged}
+        report={mappedReport ?? []}
       />
       <div>
         {tableData && (
