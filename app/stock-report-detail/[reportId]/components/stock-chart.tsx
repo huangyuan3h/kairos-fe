@@ -36,7 +36,7 @@ interface StockChartProps {
 const StockChart: React.FC<StockChartProps> = ({ stockCode, historyData }) => {
   const stockName = stockNameConfig[stockCode];
   return (
-    <Card>
+    <Card className="col-span-12">
       <CardHeader>
         <CardTitle>{`${stockName} - ${stockCode}`}</CardTitle>
         <CardDescription>January - June 2024</CardDescription>

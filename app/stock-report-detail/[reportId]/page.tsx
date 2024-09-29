@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { subMonths, format } from "date-fns";
 import StockChart from "./components/stock-chart";
 import { PredictReportType } from "@/types/stock-report";
+import XueqiuStockLink from "./components/xueqiu-Link";
 const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
   const reportId = params.reportId;
 
@@ -17,7 +18,7 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
     () => getReportById(reportId)
   );
 
-  const [stockCode, setStockCode] = useState<null | string>(null);
+  const [stockCode, setStockCode] = useState<string>();
   const [startDate, setStartDate] = useState<null | string>(null);
   const [endDate, setEndDate] = useState<null | string>(null);
 
@@ -88,13 +89,14 @@ const StockReportDetail = ({ params }: { params: { reportId: string } }) => {
           <ChevronLeft className="h-4 w-4" /> Back
         </Button>
       </div>
-      <div>
+      <div className="grid grid-cols-12 grid-rows-12 gap-4 p-4">
         {stockCode && historyData && (
           <StockChart
             stockCode={stockCode ?? ""}
             historyData={[...historyData, ...predictData]}
           />
         )}
+        <XueqiuStockLink stockCode={stockCode} />
       </div>
     </div>
   );
