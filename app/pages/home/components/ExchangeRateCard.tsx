@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Label } from "@/components/ui/label";
+
 // 汇率 API 获取函数
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -60,15 +62,19 @@ const getCurrentDate = () => new Date().toISOString().split("T")[0];
 export function ExchangeRateChart() {
   const [fromCountry, setFromCountry] = useState("USD");
   const [toCountry, setToCountry] = useState("CNY");
+  const [days, setDays] = useState(20);
 
-  const startDate = getPastDate(20);
+  const startDate = getPastDate(days);
   const endDate = getCurrentDate();
 
-  // 使用 SWR 获取汇率数据
   const { data, error } = useSWR(
     `https://api.frankfurter.app/${startDate}..${endDate}?from=${fromCountry}&to=${toCountry}`,
     fetcher
   );
+
+  const handleDayChange = (val: string) => {
+    setDays(parseInt(val, 10));
+  };
 
   const chartConfig = {
     desktop: {
@@ -103,42 +109,58 @@ export function ExchangeRateChart() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex gap-4 mb-4 items-center">
-          <div>
-            <Select
-              onValueChange={(v) => setFromCountry(v)}
-              value={fromCountry}
-            >
-              <SelectTrigger className="w-[180px]">
-                <SelectValue
-                  placeholder="From Country"
-                  defaultValue={fromCountry}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country.code} value={country.code}>
-                    {country.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+        <div className="flex gap-4 mb-4 items-center justify-between">
+          <div className="flex gap-4 items-center">
+            <div>
+              <Select
+                onValueChange={(v) => setFromCountry(v)}
+                value={fromCountry}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue
+                    placeholder="From Country"
+                    defaultValue={fromCountry}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>-</div>
+            <div>
+              <Select onValueChange={(v) => setToCountry(v)} value={toCountry}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue
+                    placeholder="To Country"
+                    defaultValue={toCountry}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country.code} value={country.code}>
+                      {country.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div>-</div>
-          <div>
-            <Select onValueChange={(v) => setToCountry(v)} value={toCountry}>
+          <div className="flex gap-4 items-center">
+            <Label>Days:</Label>
+            <Select value={`${days}`} onValueChange={handleDayChange}>
               <SelectTrigger className="w-[180px]">
-                <SelectValue
-                  placeholder="To Country"
-                  defaultValue={toCountry}
-                />
+                <SelectValue placeholder="select day" />
               </SelectTrigger>
               <SelectContent>
-                {countries.map((country) => (
-                  <SelectItem key={country.code} value={country.code}>
-                    {country.name}
-                  </SelectItem>
-                ))}
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="30">30</SelectItem>
+                <SelectItem value="60">60</SelectItem>
               </SelectContent>
             </Select>
           </div>

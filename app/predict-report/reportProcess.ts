@@ -12,6 +12,7 @@ const InvestmentHorizonMapping = {
 };
 
 const BE_weights = [0.15, 0.15, 0.15, 0.15, 0.2, 0.2];
+// const BE_weights = [0.05, 0.05, 0.05, 0.15, 0.2, 0.2];
 
 export const calculateDecisionScore = (
   report: PredictReportType,
